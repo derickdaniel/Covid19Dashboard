@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Covid-19 Dashboard India</title>
+    <link rel="stylesheet" th:href="@{/vendors/iconfonts/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/vendors/css/vendor.bundle.addons.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" />
+</head>
+
+<body>
+<div class="container-scroller">
+
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+            <a class="navbar-brand brand-logo" href="#">
+                <img th:src="@{/images/covidlogo.png}" alt="logo"  />
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+            <button class="navbar-toggler navbar-toggler d-none d-lg-block navbar-dark align-self-center mr-3" type="button" data-toggle="minimize">
+                <!-- <span class="navbar-toggler-icon"></span> -->
+            </button>
+            <ul class="navbar-nav navbar-nav-right" style="color: #ccc;">
+            	<h2>Covid-19 Dashboard India</h4>
+            </ul>
+            <ul class="navbar-nav navbar-nav-right" style="color: #ccc;">
+                <li class="nav-item dropdown d-none d-xl-inline-block">
+                    <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                        Hello, <span class="profile-text" th:text=${user.firstName}></span>
+                        <img class="img-xs rounded-circle" th:src="@{/images/faces/account_pic.png}" alt="Profile image">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                        <a class="dropdown-item mt-2">
+                            Manage Accounts
+                        </a>
+                        <a class="dropdown-item">
+                            Change Password
+                        </a>
+                        <a class="dropdown-item" th:href="@{/logout}" method="post">
+                   			Sign Out
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav" style="position: fixed;">
+                <li class="nav-item nav-profile">
+                    <div class="nav-link">
+                        <div class="user-wrapper">
+                            <div class="profile-image">
+                                <img th:src="@{/images/faces/account_pic.png}" alt="profile image">
+                            </div>
+                            <div class="text-wrapper">
+                                <p class="profile-name">
+                                	<span class="profile-text" th:text=${user.firstName}/>
+                                	<span class="profile-text" th:text=${user.lastName}/>
+                                </p>
+                                <div>
+                                    <small class="designation text-muted">India</small>
+                                    <span class="status-indicator online"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="layout">
+                        <i class="menu-icon mdi mdi-television"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+               <!--  <li class="nav-item" hidden>
+                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                        <i class="menu-icon mdi mdi-content-copy"></i>
+                        <span class="menu-title">Table</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="ui-basic">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">State wise</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">District wise</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> -->
+                <li class="nav-item" hidden>
+                    <a class="nav-link" th:href="@{form-elements}">
+                        <i class="menu-icon mdi mdi-backup-restore"></i>
+                        <span class="menu-title">Form elements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#stateDt">
+                        <i class="menu-icon mdi mdi-table"></i>
+                        <span class="menu-title">All state data</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#districtDt">
+                        <i class="menu-icon mdi mdi-table"></i>
+                        <span class="menu-title">All district data</span>
+                    </a>
+                </li>
+                <li class="nav-item" hidden>
+                    <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="menu-icon mdi mdi-restart"></i>
+                        <span class="menu-title">User Pages</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="auth">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Blank Page </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Login </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> Register </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> 404 </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"> 500 </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper" layout:fragment="content">
+					
+				<div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <i class="mdi mdi-alert-octagon text-danger icon-lg"></i>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Total Active</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">
+									<span th:text=${covidTotal.active}></span>
+								</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-arrow-up mr-1" aria-hidden="true"></i>
+                        <span th:text=${covidTotal.aChanges}></span> Daily changes
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <i class="mdi mdi-receipt text-warning icon-lg"></i>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Total Cases</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">
+                                	<span th:text=${covidTotal.confirmed}></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-arrow-up mr-1" aria-hidden="true"></i> 
+                        <span th:text=${covidTotal.cChanges}></span> Daily changes
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <i class="mdi mdi-heart text-success icon-lg"></i>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Total Recovered</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">
+                                	<span th:text=${covidTotal.recovered}></span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-arrow-up mr-1" aria-hidden="true"></i> 
+                        <span th:text=${covidTotal.rChanges}></span> Daily changes 
+                    </p>
+.                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <i class="mdi mdi-arrow-down-bold text-danger icon-lg"></i>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Total deaths</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">
+                                	<span th:text=${covidTotal.deaths}></span> 
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-arrow-up mr-1" aria-hidden="true"></i>
+                        <span th:text=${covidTotal.dChanges}></span> Daily changes
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- State wise data table -->
+        <div class="row" id="stateDt">
+        <div class="col-lg-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" align="left">All state data</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    State 
+                                </th>
+                                <th>
+                                    Active
+                                </th>
+                                <th>
+                                    Confirmed
+                                </th>
+                                <th>
+                                    Recovered
+                                </th>
+                                <th>
+                                    Deaths
+                                </th>
+                                <th>
+                                    Recovery rate
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody th:each="covidStateData,in : ${covidStateDataList}">
+                            <tr>
+                                <td class="font-weight-medium">
+                                    <span th:text=${in.count}></span> 
+                                </td>
+                                <td>
+                                	<i class="menu-arrow"></i>
+                                    <a th:text=${covidStateData.state} th:href="'#'+${covidStateData.state}"></a> 
+                                </td>
+                                <td>
+                                    <span th:text=${covidStateData.active}></span> 
+                                </td>
+                                <td>
+                                	<span th:text=${covidStateData.confirmed}></span> 
+                                </td>
+                                <td class="text-success">
+                                    <span th:text=${covidStateData.recovered}></span> 
+                                </td>
+                                <td class="text-danger">
+                                    <span th:text=${covidStateData.deaths}></span>
+                                    <!-- <i class="mdi mdi-arrow-down"></i> -->
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     <!-- District wise data table -->
+        <div class="row" id="districtDt">
+        <div class="col-lg-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" align="center">All district data</h4>
+									<div class="table-responsive"
+										th:each="covidStateData,in : ${covidStateDataList}">
+										
+										<span th:id="${covidStateData.state}" ></span><br>
+										<h5><span style="color: cornflowerblue;" th:text=${covidStateData.state}></span></h5>
+										
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>District</th>
+													<th>Old Confirmed</th>
+													<th>Confirmed</th>
+													<th>Recovered</th>
+													<th>Deaths</th>
+												</tr>
+											</thead>
+											<tbody
+												th:each="covidDistrictData,inn : ${covidStateData.districtData}">
+												<tr>
+													<td class="font-weight-medium"><span
+														th:text=${inn.count}></span></td>
+													<td><span th:text=${covidDistrictData.id}></span></td>
+													<td><span th:text=${covidDistrictData.oldConfirmed}></span>
+													</td>
+													<td><span th:text=${covidDistrictData.confirmed}></span>
+													</td>
+													<td class="text-success"><span
+														th:text=${covidDistrictData.recovered}></span></td>
+													<td class="text-danger"><span
+														th:text=${covidDistrictData.deaths}></span> <!-- <i class="mdi mdi-arrow-down"></i> -->
+													</td>
+												</tr>
+											</tbody>
+										</table>
+											<br><br>
+										<!--district data table block end-->
+									</div>
+								</div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+            <!-- content-wrapper ends -->
+
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020
+              <a href="#" target="_blank">Derick Daniel</a>. All rights reserved.
+              <img th:src="@{/images/flags/IN.png}" alt="logo"/>
+            </span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+
+    </div>
+
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+
+<!-- plugins:js -->
+<script th:src="@{/vendors/js/vendor.bundle.base.js}"></script>
+<script th:src="@{/vendors/js/vendor.bundle.addons.js}"></script>
+<script th:src="@{/js/off-canvas.js}"></script>
+<script th:src="@{/js/misc.js}"></script>
+<script th:src="@{/js/dashboard.js}"></script>
+<script type="text/javascript">
+
+</script>
+
+
+</body>
+</html>
